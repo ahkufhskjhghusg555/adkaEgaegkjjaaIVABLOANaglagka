@@ -22,14 +22,32 @@ public:
 	Vec2D normalize();
 };
 
+class Vec3D {
+public:
+	double x, y, z;
+	Vec3D(double x, double y, double z);
+	Vec3D();
+
+	Vec3D operator+(const Vec3D& v);
+	Vec3D operator-(const Vec3D& v);
+	double operator*(const Vec3D& v);
+	Vec3D operator*(const double& k);
+	Vec3D operator/(const double& k);
+
+	double normsqr();
+	double norm();
+
+	Vec3D normalize();
+};
+
 class Particle {
 
 public:
 
 	Particle();
-	Particle(Vec2D pos, Vec2D vel);
+	Particle(Vec3D pos, Vec3D vel);
 
-	Vec2D position, velocity;
+	Vec3D position, velocity;
 	int id = -1;
 
 };
@@ -57,3 +75,8 @@ struct hsv {
 };
 
 struct rgb convertToRGB(hsv in);
+
+Vec3D boxSpaceToRenderSpace(Vec3D position, Vec3D worldSize);
+Vec3D cross(Vec3D a, Vec3D b);
+
+double clamp(double value, double minimum, double maximum);

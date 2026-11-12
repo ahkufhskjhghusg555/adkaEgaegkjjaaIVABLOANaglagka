@@ -4,12 +4,12 @@ class Simulation
 {
 
 public:
-	int initialize();
+	int initialize(int p_count);
 	void mainLoop();
 	void end();
 	void togglePause();
 	int getParticleCount();
-	Vec2D getWorldSize();
+	Vec3D getWorldSize();
 	void screenshot();
 
 	Particle* particles;
@@ -17,8 +17,8 @@ public:
 private:
 	bool ended = false;
 
-	const double box_width = 2.0, box_height = 1.5;
-	const int particle_count = 10;
+	const double box_width = 2.0, box_height = 1.5, box_depth = 1.0;
+	int particle_count = 10;
 	const double dt = 0.02;
 	
 	bool paused = true;

@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 Screen* instance;
+double fps = 60.0;
 
 void Screen::startWindow() {
 
@@ -34,10 +35,18 @@ void callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     }
 }
 
+SimulationRenderer* simRendererPTR;
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+    simRendererPTR->zoom(3*yoffset / fps);
+}
+
 void Screen::mainLoop() {
 
-    double fps = 60.0;
     double lastFrameTime = glfwGetTime();
+
+    Vec2D cursor;
+    glfwGetCursorPos(window, &cursor.x, &cursor.y);
+    
     while (!glfwWindowShouldClose(window))
     {
         double now = glfwGetTime();
@@ -65,6 +74,18 @@ void Screen::mainLoop() {
         glfwSwapBuffers(window);
         simPTR = simulationPTR;
         glfwSetKeyCallback(window, callback);
+
+        Vec2D tmp = cursor;
+        glfwGetCursorPos(window, &cursor.x, &cursor.y);
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+
+            simRenderer.rotateCamera(-(cursor.y - tmp.y)/fps, (cursor.x - tmp.x)/fps);
+
+        }
+
+        simRendererPTR = &simRenderer;
+        glfwSetScrollCallback(window, scrollCallback);
+
         glfwPollEvents();
         lastFrameTime = now;
 

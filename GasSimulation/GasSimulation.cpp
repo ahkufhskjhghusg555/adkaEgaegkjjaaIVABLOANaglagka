@@ -17,8 +17,12 @@ void renderThread(Screen* screenPTR) {
 int main()
 {
 
+	printf("Input particle count:\n");
+	int particle_count;
+	scanf_s("%d", &particle_count);
+	printf("Particles in left partition:\n");
 	Simulation sim;
-	sim.initialize();
+	sim.initialize(particle_count);
 
 	Screen screen;
 	screen.hook(&sim);
