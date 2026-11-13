@@ -17,7 +17,7 @@ public:
 private:
 	bool ended = false;
 
-	const double box_width = 2.0, box_height = 1.5, box_depth = 1.0;
+	const double box_width = 2.0, box_height = 1.5, box_depth = 3.0;
 	int particle_count = 10;
 	const double dt = 0.02;
 	

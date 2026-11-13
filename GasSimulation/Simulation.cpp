@@ -1,6 +1,7 @@
 #include "Simulation.h"
 #include <random>
 #include <iostream>
+#include <time.h>
 
 int Simulation::initialize(int p_count) {
 	particle_count = p_count;
@@ -10,7 +11,7 @@ int Simulation::initialize(int p_count) {
 		return -1;
 	}
 
-	srand(glfwGetTime()*100000);
+	srand(time(NULL));
 	for (int i = 0; i < particle_count; i++) {
 		Vec3D prev_location(0.001 * (rand() % 1000) * box_width, 0.001 * (rand() % 1000) * box_depth, 0.001 * (rand() % 1000) * box_height);
 		//Vec2D prev_location = getWorldSize()*0.5;
