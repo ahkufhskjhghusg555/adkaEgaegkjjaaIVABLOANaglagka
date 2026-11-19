@@ -34,6 +34,32 @@ void SimulationRenderer::renderBox(GLFWwindow* window, Vec3D i_hat, Vec3D j_hat)
 	return;
 }
 
+void SimulationRenderer::renderPartition(GLFWwindow* window, Vec3D i_hat, Vec3D j_hat) {
+
+	Vec3D world_size = sim->getWorldSize();
+
+	Vec2D corners[4];
+	for (int i = 0; i <= 1; i++) {
+		for (int j = 0; j <= 1; j++) {
+			corners[i * 2 + j] = renderSpaceToScreenSpace(boxSpaceToRenderSpace(Vec3D(world_size.x/2, i * world_size.y, j * world_size.z), world_size), i_hat, j_hat);
+		}
+	}
+	
+	int pairs[] = {0,1,3,2};
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_POLYGON);
+	glColor4f(1.0, 0.0, 0.0, 0.3);
+	for (int i = 0; i < 3; i++) {
+		Vec2D a = corners[pairs[i]];
+		Vec2D b = corners[pairs[i + 1]];
+		glVertex2d(a.x,a.y);
+		glVertex2d(b.x, b.y);
+	}
+	glEnd();
+	return;
+}
+
 void SimulationRenderer::render(GLFWwindow* window)
 {
 	view_vector = Vec3D(sin(cameraTheta) * cos(cameraPhi), sin(cameraTheta) * sin(cameraPhi), cos(cameraTheta));
@@ -58,6 +84,7 @@ void SimulationRenderer::render(GLFWwindow* window)
 	drawLine(sim->getWorldSize().x * 0.5, -sim->getWorldSize().y * 0.5, -sim->getWorldSize().x * 0.5, -sim->getWorldSize().y * 0.5, color);
 	*/
 	renderBox(window, i_hat, j_hat);
+	renderPartition(window, i_hat, j_hat);
 }
 
 void SimulationRenderer::drawCircle(double x, double y, double r, hsv color, GLenum type) {
@@ -79,7 +106,7 @@ void SimulationRenderer::drawCircle(double x, double y, double r, hsv color, GLe
 	}
 
 	rgb col = convertToRGB(color);
-	glColor3f(col.red, col.green, col.blue);
+	glColor4f(col.red, col.green, col.blue, 1.0);
 	for (int i = 0; i < e; i++) {
 		glVertex2d(x + r * cos(2 * i * M_PI / e), y + r * sin(2 * i * M_PI / e));
 
@@ -90,7 +117,7 @@ void SimulationRenderer::drawCircle(double x, double y, double r, hsv color, GLe
 void SimulationRenderer::drawLine(double x1, double y1, double x2, double y2, hsv color) {
 	GLenum type = GL_LINES;
 	rgb col = convertToRGB(color);
-	glColor3f(col.red, col.green, col.blue);
+	glColor4f(col.red, col.green, col.blue, 1.0);
 	glLineWidth(1.0);
 	glBegin(type);
 	glVertex2d(x1, y1);

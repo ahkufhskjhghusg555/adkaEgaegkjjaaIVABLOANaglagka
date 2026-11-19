@@ -11,7 +11,8 @@ public:
 private:
 	Simulation* sim;
 	void renderBox(GLFWwindow* window, Vec3D i_hat, Vec3D j_hat);
-	
+	void renderPartition(GLFWwindow* window, Vec3D i_hat, Vec3D j_hat);
+
 	void drawCircle(double x, double y, double r, hsv color, GLenum type);
 	void drawLine(double x1, double y1, double x2, double y2, hsv color);
 	
